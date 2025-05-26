@@ -1,4 +1,5 @@
 import 'package:chatt_app/src/auth/screen/login_screen.dart';
+import 'package:chatt_app/src/auth/screen/sing_in_screen.dart';
 import 'package:chatt_app/src/users_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class AuthWrapper extends StatelessWidget {
           return UsersScreen();
         } else {
           // Пользователь не вошёл
-          return LoginScreen();
+          return SingInScreen();
         }
       },
     );

@@ -1,9 +1,11 @@
 import 'package:chatt_app/auth_wrapper.dart';
+import 'package:chatt_app/core/dependencies/dependencies.dart';
 import 'package:chatt_app/src/auth/screen/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
+  setup();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(); // ← эта строка ОБЯЗАТЕЛЬНА
   runApp(MyApp());

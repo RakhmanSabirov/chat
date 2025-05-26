@@ -1,3 +1,5 @@
+import 'package:chatt_app/src/auth/fform/fields/email_field.dart';
+import 'package:chatt_app/src/auth/fform/fields/fields.dart';
 import 'package:chatt_app/src/auth/widgets/long_button.dart';
 import 'package:chatt_app/src/users_screen.dart';
 import 'package:fform/fform.dart';
@@ -79,6 +81,8 @@ class _LoginViewState extends State<LoginView> {
         const SizedBox(height: 20),
         BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
+            EmailField email = _form.email;
+            PasswordField password = _form.password;
             return FFormBuilder<LoginForm>(
               form: _form,
               builder: (context, LoginForm form,_) {
@@ -86,12 +90,18 @@ class _LoginViewState extends State<LoginView> {
                   children: [
                     TextField(
                       controller: widget._emailController,
-                      decoration: const InputDecoration(hintText: "Email"),
+                      decoration: InputDecoration(
+                        errorText: email.exception.toString(),
+                        hintText: "Email",
+                      ),
                     ),
                     const SizedBox(height: 20),
                     TextField(
                       controller: widget._passwordController,
-                      decoration: const InputDecoration(hintText: "Пароль"),
+                      decoration: InputDecoration(
+                        hintText: "Пароль",
+                        errorText: password.exception.toString(),
+                      ),
                       obscureText: true,
                     ),
                   ],

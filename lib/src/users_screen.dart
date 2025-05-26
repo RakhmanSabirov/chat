@@ -1,3 +1,4 @@
+import 'package:chatt_app/src/auth/screen/sing_in_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -15,7 +16,7 @@ class UsersScreen extends StatelessWidget {
     if (context.mounted) {
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        MaterialPageRoute(builder: (_) => const SingInScreen()),
             (route) => false,
       );
     }
