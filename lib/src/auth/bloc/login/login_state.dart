@@ -8,11 +8,6 @@ class LoginLoading extends LoginState {}
 
 class LoginSuccess extends LoginState {}
 
-class LoginRedirectVerifyState extends LoginState {
-  final String email;
-
-  LoginRedirectVerifyState({required this.email});
-}
 
 class LoginError extends LoginState {
   final String? message;

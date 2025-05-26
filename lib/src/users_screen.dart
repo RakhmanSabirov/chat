@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../service/auth_service.dart';
-import 'login_screen.dart';
+import 'auth/screen/login_screen.dart';
 
 class UsersScreen extends StatelessWidget {
   final currentUser = FirebaseAuth.instance.currentUser;

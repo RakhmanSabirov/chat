@@ -1,4 +1,5 @@
-import 'package:chatt_app/presentation/auth/params/login_params.dart';
+import 'package:chatt_app/src/auth/params/login_params.dart';
+import 'package:chatt_app/src/auth/params/register_params.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository {
@@ -15,13 +16,13 @@ class AuthRepository {
     return result.user;
   }
 
-  Future<User?> registerWithEmail(String email, String password, String name) async {
+  Future<User?> registerWithEmail(RegisterParams params) async {
     final result = await _firebaseAuth.createUserWithEmailAndPassword(
-      email: email,
-      password: password,
+      email: params.email,
+      password: params.password,
     );
 
-    await result.user?.updateDisplayName(name);
+    await result.user?.updateDisplayName(params.name);
     await _firebaseAuth.currentUser?.reload();
     return _firebaseAuth.currentUser;
   }
