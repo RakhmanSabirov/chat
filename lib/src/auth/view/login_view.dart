@@ -1,5 +1,4 @@
-import 'package:chatt_app/src/auth/fform/fields/email_field.dart';
-import 'package:chatt_app/src/auth/fform/fields/fields.dart';
+import 'package:chatt_app/core/parser.dart';
 import 'package:chatt_app/src/auth/widgets/long_button.dart';
 import 'package:chatt_app/src/users_screen.dart';
 import 'package:fform/fform.dart';
@@ -18,8 +17,8 @@ class LoginView extends StatefulWidget {
     super.key,
     required TextEditingController emailController,
     required TextEditingController passwordController,
-  })  : _emailController = emailController,
-        _passwordController = passwordController;
+  }) : _emailController = emailController,
+       _passwordController = passwordController;
 
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
@@ -31,7 +30,6 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final LoginForm _form = LoginForm.parse();
 
-  // Вход
   Future<void> Function() _loginUser(BuildContext context) => () async {
     _form.change(
       email: widget._emailController.text,
@@ -46,26 +44,21 @@ class _LoginViewState extends State<LoginView> {
     );
   };
 
-  // Переход на регистрацию
   void Function() _toRegister(BuildContext context) =>
-          () => context.read<SignInCubit>().to(SingRegisterState());
+      () => context.read<SignInCubit>().to(SingRegisterState());
 
   void _listener(BuildContext context, LoginState state) {
     switch (state) {
       case LoginSuccess():
-        {
-          // Здесь можно перейти на следующий экран
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => UsersScreen()));
-          break;
-        }
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (_) => UsersScreen()));
+        break;
       case LoginError(message: String message):
-        {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
-          );
-          break;
-        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+        break;
       default:
         return;
     }
@@ -77,21 +70,34 @@ class _LoginViewState extends State<LoginView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       padding: const EdgeInsets.all(20),
       children: [
-        const Text("Логин"),
+        const Text(
+          "Логин",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+        ),
         const SizedBox(height: 20),
         BlocBuilder<LoginCubit, LoginState>(
           builder: (context, state) {
-            EmailField email = _form.email;
-            PasswordField password = _form.password;
             return FFormBuilder<LoginForm>(
               form: _form,
-              builder: (context, LoginForm form,_) {
+              builder: (context, LoginForm form) {
                 return Column(
                   children: [
                     TextField(
                       controller: widget._emailController,
                       decoration: InputDecoration(
-                        errorText: email.exception.toString(),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        errorText: ParserUtils.getException(form, form.email),
                         hintText: "Email",
                       ),
                     ),
@@ -99,8 +105,23 @@ class _LoginViewState extends State<LoginView> {
                     TextField(
                       controller: widget._passwordController,
                       decoration: InputDecoration(
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         hintText: "Пароль",
-                        errorText: password.exception.toString(),
+                        errorText: ParserUtils.getException(
+                          form,
+                          form.password,
+                        ),
                       ),
                       obscureText: true,
                     ),
@@ -131,8 +152,8 @@ class _LoginViewState extends State<LoginView> {
                 TextSpan(
                   text: "Зарегистрироваться",
                   style: const TextStyle(color: Colors.blue),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = _toRegister(context),
+                  recognizer:
+                      TapGestureRecognizer()..onTap = _toRegister(context),
                 ),
               ],
             ),

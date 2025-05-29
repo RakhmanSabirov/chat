@@ -20,10 +20,7 @@ enum PasswordError {
 class PasswordField extends FFormField<String, PasswordError> {
   bool isRequired;
 
-  PasswordField({
-    required String value,
-    this.isRequired = true,
-  }) : super(value);
+  PasswordField({required String value, this.isRequired = true}) : super(value);
 
   @override
   PasswordError? validator(value) {

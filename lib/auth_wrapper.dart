@@ -1,4 +1,3 @@
-import 'package:chatt_app/src/auth/screen/login_screen.dart';
 import 'package:chatt_app/src/auth/screen/sing_in_screen.dart';
 import 'package:chatt_app/src/users_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,10 +18,8 @@ class AuthWrapper extends StatelessWidget {
         }
 
         if (snapshot.hasData) {
-          // Пользователь авторизован
           return UsersScreen();
         } else {
-          // Пользователь не вошёл
           return SingInScreen();
         }
       },

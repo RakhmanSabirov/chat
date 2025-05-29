@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class CardWidget extends StatelessWidget {
@@ -24,13 +23,9 @@ class CardWidget extends StatelessWidget {
     final defaultBackgroundColor = Colors.white;
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          16
-        ),
+        borderRadius: BorderRadius.circular(16),
         color: backgroundColor ?? defaultBackgroundColor,
-        border: Border.all(
-          color: Colors.white60
-        ),
+        border: Border.all(color: Colors.white60),
       ),
       child: Padding(
         padding: padding ?? const EdgeInsets.all(16),

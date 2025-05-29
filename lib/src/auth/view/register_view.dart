@@ -1,5 +1,5 @@
+import 'package:chatt_app/core/parser.dart';
 import 'package:chatt_app/src/auth/bloc/register/register_cubit.dart';
-import 'package:chatt_app/src/auth/fform/fields/fields.dart';
 import 'package:chatt_app/src/auth/fform/form/register_form.dart';
 import 'package:chatt_app/src/auth/params/register_params.dart';
 import 'package:chatt_app/src/auth/widgets/long_button.dart';
@@ -8,7 +8,6 @@ import 'package:fform/fform.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../bloc/login/login_cubit.dart';
 import '../bloc/sign_in/sign_in_cubit.dart';
 import '../widgets/card_widget.dart';
 
@@ -17,8 +16,8 @@ class RegisterView extends StatefulWidget {
     super.key,
     required TextEditingController emailController,
     required TextEditingController passwordController,
-  })  : _emailController = emailController,
-        _passwordController = passwordController;
+  }) : _emailController = emailController,
+       _passwordController = passwordController;
 
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
@@ -32,19 +31,20 @@ class _RegisterViewState extends State<RegisterView> {
   final RegisterForm _form = RegisterForm.parse();
 
   @override
-  initState() {
+  void initState() {
     _nameController = TextEditingController();
     super.initState();
   }
 
-  // Вход
   Future<void> Function() _registerUser(BuildContext context) => () async {
     _form.change(
       email: widget._emailController.text,
       password: widget._passwordController.text,
       name: _nameController.text,
     );
+
     if (_form.isInvalid) return;
+
     await context.read<RegistrationCubit>().register(
       RegisterParams(
         email: widget._emailController.text,
@@ -54,26 +54,21 @@ class _RegisterViewState extends State<RegisterView> {
     );
   };
 
-  // Переход на регистрацию
   void Function() _toLoginState(BuildContext context) =>
-          () => context.read<SignInCubit>().to(SignLoginState());
+      () => context.read<SignInCubit>().to(SignLoginState());
 
   void _listener(BuildContext context, RegistrationState state) {
     switch (state) {
       case RegistrationSuccess():
-        {
-          // Здесь можно перейти на следующий экран
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => UsersScreen()));
-          break;
-        }
+        Navigator.of(
+          context,
+        ).pushReplacement(MaterialPageRoute(builder: (_) => UsersScreen()));
+        break;
       case RegistrationFailure(message: String message):
-        {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(message)),
-          );
-          break;
-        }
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
+        break;
       default:
         return;
     }
@@ -85,22 +80,22 @@ class _RegisterViewState extends State<RegisterView> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       padding: const EdgeInsets.all(20),
       children: [
-        const Text("Логин"),
+        const Text(
+          "Регистрация",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+        ),
         const SizedBox(height: 20),
-        BlocBuilder<LoginCubit, LoginState>(
+        BlocBuilder<RegistrationCubit, RegistrationState>(
           builder: (context, state) {
             return FFormBuilder<RegisterForm>(
               form: _form,
-              builder: (context, RegisterForm form,_) {
-                EmailField email = _form.email;
-                PasswordField password = _form.password;
-                NameField name = _form.name;
+              builder: (context, RegisterForm form) {
                 return Column(
                   children: [
                     TextField(
                       controller: widget._emailController,
                       decoration: InputDecoration(
-                        errorText: email.exception.toString(),
+                        errorText: ParserUtils.getException(form, form.email),
                         hintText: "Email",
                       ),
                     ),
@@ -108,7 +103,7 @@ class _RegisterViewState extends State<RegisterView> {
                     TextField(
                       controller: _nameController,
                       decoration: InputDecoration(
-                        errorText: name.exception.toString(),
+                        errorText: ParserUtils.getException(form, form.name),
                         hintText: "Имя",
                       ),
                     ),
@@ -116,8 +111,11 @@ class _RegisterViewState extends State<RegisterView> {
                     TextField(
                       controller: widget._passwordController,
                       decoration: InputDecoration(
+                        errorText: ParserUtils.getException(
+                          form,
+                          form.password,
+                        ),
                         hintText: "Пароль",
-                        errorText: password.exception.toString(),
                       ),
                       obscureText: true,
                     ),
@@ -133,7 +131,7 @@ class _RegisterViewState extends State<RegisterView> {
           builder: (context, state) {
             return LongButton(
               onTap: _registerUser(context),
-              text: "Зарегестрироваться",
+              text: "Зарегистрироваться",
               isLoading: state is RegistrationLoading,
             );
           },
@@ -144,12 +142,12 @@ class _RegisterViewState extends State<RegisterView> {
           child: Text.rich(
             TextSpan(
               children: [
-                const TextSpan(text: "Нет аккаунта? "),
+                const TextSpan(text: "Уже есть аккаунт? "),
                 TextSpan(
-                  text: "Зарегистрироваться",
+                  text: "Войти",
                   style: const TextStyle(color: Colors.blue),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = _toLoginState(context),
+                  recognizer:
+                      TapGestureRecognizer()..onTap = _toLoginState(context),
                 ),
               ],
             ),

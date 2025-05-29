@@ -13,10 +13,6 @@ class RegisterParams extends Params {
 
   @override
   toData() {
-    return {
-      'name': name,
-      'email': email,
-      'password': password,
-    };
+    return {'name': name, 'email': email, 'password': password};
   }
 }

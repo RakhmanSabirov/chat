@@ -13,11 +13,7 @@ class RegisterForm extends FForm {
     required this.password,
   });
 
-  factory RegisterForm.parse({
-    String? email,
-    String? name,
-    String? password,
-  }) {
+  factory RegisterForm.parse({String? email, String? name, String? password}) {
     return RegisterForm(
       name: NameField(value: name ?? ''),
       email: EmailField(value: email ?? ''),
@@ -41,9 +37,5 @@ class RegisterForm extends FForm {
   bool get allFieldUpdateCheck => false;
 
   @override
-  List<FFormField> get fields => [
-    name,
-    email,
-    password,
-  ];
+  List<FFormField> get fields => [name, email, password];
 }

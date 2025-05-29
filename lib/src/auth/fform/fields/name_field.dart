@@ -1,7 +1,5 @@
 import 'package:fform/fform.dart';
 
-import '../../../../core/check/check.dart';
-
 enum NameError {
   empty,
   not;
@@ -28,7 +26,6 @@ class NameField extends FFormField<String, NameError> {
   NameError? validator(value) {
     if (isRequired) {
       if (value.isEmpty) return NameError.empty;
-      if (!Check.isEmail(value)) return NameError.not;
     }
     return null;
   }

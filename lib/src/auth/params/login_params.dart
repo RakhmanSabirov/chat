@@ -4,16 +4,10 @@ class LoginParams extends Params {
   final String email;
   final String password;
 
-  LoginParams({
-    required this.email,
-    required this.password,
-  });
+  LoginParams({required this.email, required this.password});
 
   @override
   toData() {
-    return {
-      'email': email,
-      'password': password,
-    };
+    return {'email': email, 'password': password};
   }
 }
